@@ -1,0 +1,23 @@
+run:
+  task: image_text_pretrain
+  runner: runner_base
+  batch_size_train: 2
+  batch_size_eval: 2
+  num_workers: 2
+  max_epoch: 1
+  seed: 42
+  output_dir: ./output
+
+model:
+  arch: minigpt4qwen
+  model_type: qwen7b_chat
+
+datasets:
+  minigpt4_instruction:
+    data_type: images
+    build_info:
+      annotations:
+        train:
+          storage: dataset/minigpt4/minigpt4_minigpt4qwen_format.json
+      images:
+        storage: dataset/minigpt4/image
