@@ -1,0 +1,45 @@
+run:
+  task: image_text_pretrain
+  runner: runner_base
+  seed: 42
+  output_dir: ./output
+  max_epoch: 1
+  batch_size_train: 8
+  batch_size_eval: 8
+  num_workers: 4
+
+datasets:
+  minigpt4_instruction:
+    data_type: images
+    build_info:
+      annotations:
+        train:
+          storage:
+            - /kaggle/working/flickr8k_minigpt4_format.json
+          url:
+            - /kaggle/working/flickr8k_minigpt4_format.json
+      images:
+        storage: /kaggle/input/flickr8k/Images
+
+model:
+  arch: minigpt4qwen
+  model_type: qwen7b_chat
+  load_pretrained: True
+  pretrained: "ckpt/blip2/blip2_pretrained_flant5xxl.pth"
+
+  vit_model: "eva_clip_g"
+  image_size: 224
+  freeze_vit: True
+
+  num_query_token: 32
+  qformer_text_input: False
+  freeze_qformer: True
+  freeze_queries: True
+
+  freeze_proj: False
+
+  llm_model: "ckpt/Qwen7B-chat"
+  llm_device_map: "auto"
+  freeze_llm: True
+
+  max_txt_len: 512

@@ -182,6 +182,8 @@ class Minigpt4Qwen(Blip2Base):
             trust_remote_code=True
         )
 
+        print("Loading Qwen...")
+
         # initialize LLM model
         self.llm_model = AutoModelForCausalLM.from_pretrained(  # also from transformers
             llm_model,
@@ -190,6 +192,8 @@ class Minigpt4Qwen(Blip2Base):
             trust_remote_code=True,
             device_map=llm_device_map
         )
+
+        print("Qwen loaded.")
 
         # Gradient Checkpointing: trades extra computation for much lower memory usage
         self.llm_model.gradient_checkpointing_enable()
