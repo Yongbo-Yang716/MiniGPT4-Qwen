@@ -1,45 +1,90 @@
-run:
-  task: image_text_pretrain
-  runner: runner_base
-  seed: 42
-  output_dir: ./output
-  max_epoch: 1
-  batch_size_train: 8
-  batch_size_eval: 8
-  num_workers: 4
-
-datasets:
-  minigpt4_instruction:
-    data_type: images
-    build_info:
-      annotations:
-        train:
-          storage:
-            - /kaggle/working/flickr8k_minigpt4_format.json
-          url:
-            - /kaggle/working/flickr8k_minigpt4_format.json
-      images:
-        storage: /kaggle/input/flickr8k/Images
-
 model:
   arch: minigpt4qwen
   model_type: qwen7b_chat
+  load_finetuned: False
   load_pretrained: True
-  pretrained: "ckpt/blip2/blip2_pretrained_flant5xxl.pth"
 
+  pretrained: "ckpt/blip2/blip2_pretrained.pth"
+  finetuned: ""
+
+  # vit encoder
   vit_model: "eva_clip_g"
   image_size: 224
+  drop_path_rate: 0
+  use_grad_checkpoint: False
+  vit_precision: "fp32"
   freeze_vit: True
+  unfreeze_pos_embed: False
 
+  # Q-Former
   num_query_token: 32
   qformer_text_input: False
   freeze_qformer: True
   freeze_queries: True
 
+  # projection
   freeze_proj: False
 
+  # LLM
   llm_model: "ckpt/Qwen7B-chat"
   llm_device_map: "auto"
   freeze_llm: True
 
-  max_txt_len: 512
+  # lora
+  get_lora: False
+  lora_alpha: 32
+  lora_r: 8
+  lora_dropout: 0.05
+
+  max_txt_len: 256
+  enable_autocast: False
+
+
+datasets:
+  minigpt4_instruction:
+    build_info:
+      annotations:
+        train:
+          storage: "/kaggle/working/flickr8k_minigpt4_format.json"
+          url: "/kaggle/working/flickr8k_minigpt4_format.json"
+      images:
+        storage: "/kaggle/input/flickr8k/Images"
+
+    vis_processor:
+      train:
+        name: "blip2_image_train"
+        image_size: 224
+
+    text_processor:
+      train:
+        name: "base_instruction"
+        max_words: 100
+
+
+run:
+  output_dir: "./output"
+
+  task: image_text_pretrain
+  runner: runner_base
+
+  device: "cuda"
+  distributed: False
+  evaluate: False
+
+  batch_size_train: 2
+  batch_size_eval: 2
+  num_workers: 2
+
+  max_epoch: 1
+  log_freq: 10
+
+  seed: 42
+  amp: False
+
+  # optimizer
+  init_lr: 1e-4
+  min_lr: 1e-6
+  warmup_lr: 1e-6
+  warmup_steps: 100
+
+  lr_sched: "linear_warmup_cosine_lr"

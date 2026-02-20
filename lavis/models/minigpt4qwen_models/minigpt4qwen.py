@@ -216,6 +216,16 @@ class Minigpt4Qwen(Blip2Base):
             self.llm_model.config.hidden_size
         )
 
+        if freeze_proj:
+            for name,param in self.llm_proj.named_parameters():
+                param.requires_grad = False
+            self.llm_proj = self.llm_proj.eval()
+            self.llm_proj.train = disabled_train
+
+        self.max_txt_len = max_txt_len
+        self._lemmatizer = None
+        self.qformer_text_input = qformer_text_input
+
         # ----------------- Lora -----------------
         self.get_lora = get_lora
         self.lora_alpha = lora_alpha
@@ -643,7 +653,7 @@ class Minigpt4Qwen(Blip2Base):
 
     # initialize pretrained model
     @classmethod
-    def from_pretrained(cls, model_type, llm_device_map="cpu"):
+    def from_pretrained(cls, model_type, llm_device_map="auto"):
         """
         Build a pretrained model from default configuration file, specified by model_type.
 
