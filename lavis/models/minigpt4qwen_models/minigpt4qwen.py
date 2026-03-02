@@ -653,7 +653,7 @@ class Minigpt4Qwen(Blip2Base):
 
     # initialize pretrained model
     @classmethod
-    def from_pretrained(cls, model_type, llm_device_map="auto"):
+    def from_pretrained(cls, model_type, llm_device_map= "cpu"):
         """
         Build a pretrained model from default configuration file, specified by model_type.
 
@@ -717,9 +717,11 @@ class Minigpt4Qwen(Blip2Base):
         freeze_llm = cfg.get("freeze_llm",True)
 
         llm_device_map = cfg.get("llm_device_map", "cpu")
+        """
         assert llm_device_map in ['cpu', 'auto'],\
             ('please set `llm_device_map` in [`cpu`,`auto`] if training or single-gpu inference,'
              ' set `cpu`. if multi-gpu inference, set `auto`')
+        """
 
         # instantiate model class
         model = cls(
