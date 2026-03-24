@@ -1,49 +1,33 @@
-contexttimer
-decord
-diffusers<=0.16.0
-einops>=0.4.1
-fairscale==0.4.4
-ftfy
+# ===== Core =====
+torch==2.1.2
+torchvision==0.16.2
+
+transformers==4.37.2
+accelerate==0.27.2
+peft==0.8.2
+
+# ===== Vision / MLLM =====
+timm==0.9.12
+einops
+pillow
+opencv-python-headless==4.8.1.78
+
+# ===== Config / Utils =====
+omegaconf==2.3.0
 iopath
-ipython
-omegaconf
-opencv-python-headless==4.5.5.64
-opendatasets
+ftfy
 packaging
-pandas
-plotly
-pre-commit
-pycocoevalcap
-pycocotools
-python-magic
-scikit-image
-sentencepiece
-spacy
-streamlit
-timm==0.4.12
-torch==2.0.1
-torchvision==0.15.2
 tqdm
-transformers==4.39.2
-webdataset
-wheel
-accelerate
-peft
+
+# ===== Data =====
+pandas
+scikit-image
+pycocotools
+pycocoevalcap
+
+# ===== Tokenizer =====
+sentencepiece
 tiktoken==0.5.1
-transformers_stream_generator
 
-# deepspeed
-deepspeed==0.13.5
-
-# gradio
-gradio==3.50.2
-
-# video
-moviepy
-
-# wandb
+# ===== Optional but safe =====
 wandb==0.17.0
-protobuf==3.19.1
-
-# others
-spacy==3.7
