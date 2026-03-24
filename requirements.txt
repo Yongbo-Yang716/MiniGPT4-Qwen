@@ -1,18 +1,19 @@
 # ===== Core =====
+# torch==2.1.2
+# torchvision==0.16.2
 torch
-torchvision==0.16.2
+torchvision
 
 transformers==4.37.2
 accelerate==0.27.2
 peft==0.8.2
 
-# ===== Vision / MLLM =====
+# ===== Vision =====
 timm==0.9.12
 einops
 pillow
-opencv-python-headless==4.8.1.78
 
-# ===== Config / Utils =====
+# ===== Config =====
 omegaconf==2.3.0
 iopath
 ftfy
@@ -22,12 +23,6 @@ tqdm
 # ===== Data =====
 pandas
 scikit-image
-pycocotools
-pycocoevalcap
 
 # ===== Tokenizer =====
 sentencepiece
-tiktoken==0.5.1
-
-# ===== Optional but safe =====
-wandb==0.17.0
